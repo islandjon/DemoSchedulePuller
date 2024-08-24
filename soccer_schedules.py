@@ -1,8 +1,30 @@
 # this script will pull the schedule of the soccer games from the website
+"""
+This script pulls the schedule of soccer games from a website and places it into a pandas DataFrame. The data is then filtered and a PDF is produced for each age group.
+Functions:
+- extract_group_schedule_links(response_text): Extracts the group schedule links from the response text.
+- check_links(base_url, links): Checks each link to see if the page exists.
+- extract_game_schedule(response_text): Extracts the game schedule data from the response text.
+- parse_team_info(team_string): Parses the team information from a team string.
+- update_table(selected_teams, selected_age_groups): Updates the table based on selected teams and age groups.
+- export_to_calendar(n_clicks, table_data): Exports the filtered schedule to a calendar.
+Variables:
+- url: The URL of the website to pull the schedule from.
+- response: The response from the website.
+- response_text: The text content of the response.
+- base_url: The base URL of the website.
+- group_schedule_links: The links to the group schedules.
+- valid_links: The valid links to the group schedules.
+- all_games_data: The extracted game schedule data from each valid link.
+- df: The DataFrame containing the game schedule data.
+- display_columns: The columns to display in the table.
+- app.layout: The layout of the Dash app.
+"""
 # and place into a pandas dataframe. The data will then be filtered and a PDF will be produced with each age groups
 
 # Import the necessary libraries
 import datetime
+import flask
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -11,11 +33,22 @@ import dash_bootstrap_components as dbc
 from dash import html, dcc, dash_table
 from dash.dependencies import Input, Output, State
 import re
-from io import BytesIO
 from ics import Calendar, Event
-from dash import dcc, callback_context
+
+# initialize the Dash app using Flask
+server = flask.Flask(__name__)
+app = dash.Dash(__name__, server=server, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 def extract_group_schedule_links(response_text):
+    """
+    Extracts the links to group schedules from the given response text.
+
+    Parameters:
+    response_text (str): The HTML response text.
+
+    Returns:
+    list: A list of group schedule links.
+    """
     soup = BeautifulSoup(response_text, 'html.parser')
     group_links = []
     for link in soup.find_all('a', href=True):
@@ -25,6 +58,21 @@ def extract_group_schedule_links(response_text):
 
 
 def check_links(base_url, links):
+    """
+    Check the validity of links by sending HTTP requests to each link.
+
+    Args:
+        base_url (str): The base URL to construct the full URL.
+        links (list): A list of links to check.
+
+    Returns:
+        list: A list of valid links.
+
+    Raises:
+        requests.exceptions.RequestException: If there is an error while sending the HTTP request.
+
+    """
+    # Rest of the code...
     valid_links = []
     for link in links:
         for page in ['1','2']:
@@ -32,16 +80,31 @@ def check_links(base_url, links):
             try:
                 response = requests.get(full_url)
                 if response.status_code == 200:
-                    print(f"Page exists: {full_url}")
+                    # print(f"Page exists: {full_url}")
                     valid_links.append(full_url)
                 else:
-                    print(f"Page does not exist or returned a non-200 status: {full_url}")
+                    # print(f"Page does not exist or returned a non-200 status: {full_url}")
             except requests.exceptions.RequestException as e:
                 print(f"Failed to reach {full_url}: {e}")
     return valid_links
 
 
 def extract_game_schedule(response_text):
+    """
+    Extracts game schedule data from the given HTML response text.
+    Args:
+        response_text (str): The HTML response text containing the game schedule.
+    Returns:
+        list: A list of dictionaries, where each dictionary represents a game and contains the following keys:
+            - 'GAME': The game reference.
+            - 'DATE/TIME': The date and time of the game.
+            - 'HOME': The home team.
+            - 'AWAY': The away team.
+            - 'LOCATION': The location of the game.
+            - 'SURFACE': The surface of the game.
+    """
+    # Code implementation goes here
+    pass
     # Parse the HTML content with BeautifulSoup
     soup = BeautifulSoup(response_text, 'html.parser')
     # Find all the rows in the schedule table
@@ -87,7 +150,7 @@ response = requests.get(url)
 
 # Check the status code
 if response.status_code == 200:
-    print('The request was successful')
+    # print('The request was successful')
     response_text = response.text
 else:
     print('The request was unsuccessful')
@@ -136,9 +199,6 @@ df = df.sort_values(by='DATE/TIME')
 
 # Only keep the original columns for display
 display_columns = ["GAME", "DATE/TIME", "HOME", "AWAY", "LOCATION", "SURFACE"]
-
-# Initialize the Dash app
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 # App layout
 app.layout = dbc.Container(
@@ -267,7 +327,5 @@ def export_to_calendar(n_clicks, table_data):
     
     return dcc.send_bytes(calendar_bytes, "soccer_schedule.ics")
 
-
-
-if __name__ == "__main__":
-    app.run_server(debug=True)
+if __name__ == '__main__':
+    app.run_server(debug=False)
