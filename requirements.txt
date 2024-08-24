@@ -1,0 +1,8 @@
+flask
+requests
+bs4
+pandas
+dash
+dash_bootstrap_components
+ics
+gunicorn
