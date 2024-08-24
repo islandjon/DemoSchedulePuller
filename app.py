@@ -204,8 +204,10 @@ display_columns = ["GAME", "DATE/TIME", "HOME", "AWAY", "LOCATION", "SURFACE"]
 # App layout
 app.layout = dbc.Container(
     [
-        dbc.Row(
-            dbc.Col(html.H1("Soccer Schedule", className="text-center my-4"))
+        dbc.Row([
+            dbc.Col(html.H1("Soccer Schedule", className="text-center my-4")),
+            dbc.Col(dbc.Button("Export to Calendar", id="export-button", color="primary", className="mt-4")
+            )]
         ),
         dbc.Row(
             dbc.Col(
@@ -237,7 +239,7 @@ app.layout = dbc.Container(
                     data=df[display_columns].to_dict("records"),
                     sort_action="native",
                     page_action="none",  # Remove paging
-                    style_table={'overflowY': 'auto', 'height': '600px'},  # Optional: Add vertical scrolling
+                    # style_table={'overflowY': 'auto', 'height': '600px'},  # Optional: Add vertical scrolling
                     style_cell={
                         'textAlign': 'left', 
                         'minWidth': '100px', 
@@ -253,11 +255,7 @@ app.layout = dbc.Container(
                 width=12,
             )
         ),
-        dbc.Row(
-            dbc.Col(
-                dbc.Button("Export to Calendar", id="export-button", color="primary", className="mt-4")
-            )
-        ),
+       
         dcc.Download(id="download-calendar"),
     ],
     fluid=True,
