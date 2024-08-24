@@ -39,6 +39,9 @@ import os
 server = flask.Flask(__name__)
 app = dash.Dash(__name__, server=server, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
+# Define the URL
+url = os.environ.get('SCED_URL') 
+
 def extract_group_schedule_links(response_text):
     """
     Extracts the links to group schedules from the given response text.
@@ -83,7 +86,7 @@ def check_links(base_url, links):
                     # print(f"Page exists: {full_url}")
                     valid_links.append(full_url)
                 else:
-                    # print(f"Page does not exist or returned a non-200 status: {full_url}")
+                    print(f"Page does not exist or returned a non-200 status: {full_url}")
             except requests.exceptions.RequestException as e:
                 print(f"Failed to reach {full_url}: {e}")
     return valid_links
@@ -142,8 +145,6 @@ def extract_game_schedule(response_text):
     return games_data
     
 
-# Define the URL
-url = os.environ.get('SCED_URL') 
 
 # Send a request to the website
 response = requests.get(url)
