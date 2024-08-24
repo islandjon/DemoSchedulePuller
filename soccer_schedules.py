@@ -34,7 +34,7 @@ from dash import html, dcc, dash_table
 from dash.dependencies import Input, Output, State
 import re
 from ics import Calendar, Event
-
+import os
 # initialize the Dash app using Flask
 server = flask.Flask(__name__)
 app = dash.Dash(__name__, server=server, external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -143,7 +143,7 @@ def extract_game_schedule(response_text):
     
 
 # Define the URL
-url = 'https://app.demosphere.com/_widgets/v1/seasonal_schedule/66c33ac190249400089a06e3/groupings'
+url = os.environ.get('SCED_URL') 
 
 # Send a request to the website
 response = requests.get(url)
