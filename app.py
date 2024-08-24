@@ -182,7 +182,7 @@ def parse_team_info(team_string):
     match = re.match(r'^(?P<League>\w+)\s(?P<Gender>[BG])-(?P<AgeGroup>U\d+|\d+U)-(?P<TeamName>.+)$', team_string)
     if match:
         info = match.groupdict()
-        info['AgeGroup'] = f"{info['Gender']}-{info['AgeGroup'].replace('U', '')}U"
+        info['AgeGroup'] = f"{info['Gender']}-U{info['AgeGroup'].replace('U', '')}"
         return info
     return {"League": "", "Gender": "", "AgeGroup": "", "TeamName": ""}
 
