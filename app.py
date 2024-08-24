@@ -99,7 +99,7 @@ def extract_game_schedule(response_text):
         response_text (str): The HTML response text containing the game schedule.
     Returns:
         list: A list of dictionaries, where each dictionary represents a game and contains the following keys:
-            - 'GAME': The game reference.
+
             - 'DATE/TIME': The date and time of the game.
             - 'HOME': The home team.
             - 'AWAY': The away team.
@@ -135,7 +135,7 @@ def extract_game_schedule(response_text):
 
         # Append extracted data to the list
         games_data.append({
-            'GAME': game_ref,
+            # 'GAME': game_ref,
             'DATE/TIME': date_time_obj,
             'HOME': home_team,
             'AWAY': away_team,
@@ -199,7 +199,13 @@ df = df.join(home_team_df.add_prefix('HOME_')).join(away_team_df.add_prefix('AWA
 df = df.sort_values(by='DATE/TIME')
 
 # Only keep the original columns for display
-display_columns = ["GAME", "DATE/TIME", "HOME", "AWAY", "LOCATION", "SURFACE"]
+display_columns = [
+    # "GAME",
+    "DATE/TIME",
+    "HOME",
+    "AWAY",
+    "LOCATION",
+    "SURFACE"]
 
 # App layout
 app.layout = dbc.Container(
@@ -312,7 +318,7 @@ def export_to_calendar(n_clicks, table_data):
             event.end = event.begin + pd.Timedelta(hours=1, minutes=20)
         event.location = row['LOCATION']
         event.description = (
-            f"Game ID: {row['GAME']}\n"
+            # f"Game ID: {row['GAME']}\n"
             f"Date/Time: {row['DATE/TIME']}\n"
             f"Home Team: {row['HOME']}\n"
             f"Away Team: {row['AWAY']}\n"
