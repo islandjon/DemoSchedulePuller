@@ -214,7 +214,7 @@ app.layout = dbc.Container(
             dbc.Col(html.H1("Soccer Schedule", className="text-center my-4"))]
         ),
         dbc.Row(
-            [dbc.Col(
+            dbc.Col(
                 dcc.Dropdown(
                     id="team-filter",
                     options=[{"label": team, "value": team} for team in sorted(list(set(df["HOME"].unique().tolist() + df["AWAY"].unique().tolist())))],
@@ -222,10 +222,7 @@ app.layout = dbc.Container(
                     multi=True,
                 ),
                 width=6,
-            ),
-            dbc.Col(dbc.Button("Export to Calendar", id="export-button", color="primary", className="mt-4"),
-                    width=6
-                    )]
+            )
         ),
         dbc.Row(
             dbc.Col(
@@ -237,6 +234,11 @@ app.layout = dbc.Container(
                 ),
                 width=6,
             )
+        ),
+        dbc.Row(
+            dbc.Col(dbc.Button("Export to Calendar", id="export-button", color="primary", className="mt-4"),
+                    width=6
+                    )
         ),
         dbc.Row(
             dbc.Col(
