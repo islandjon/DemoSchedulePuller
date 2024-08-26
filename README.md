@@ -20,8 +20,8 @@ This is a web application built using Flask and Dash to display and manage socce
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/soccer-schedule-dashboard.git
-cd soccer-schedule-dashboard
+git clone https://github.com/islandjon/DemoSchedulePuller.git
+cd DemoSchedulePuller
 ```
 
 ### Create a Virtual Environment (Optional)
