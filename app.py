@@ -221,7 +221,7 @@ app.layout = dbc.Container(
                     placeholder="Filter by Team (Home or Away)",
                     multi=True,
                 ),
-                width=6,
+                width=12,
             )
         ),
         dbc.Row(
@@ -232,7 +232,7 @@ app.layout = dbc.Container(
                     placeholder="Filter by Age Group",
                     multi=True,
                 ),
-                width=6,
+                width=12,
             )
         ),
         dbc.Row(
