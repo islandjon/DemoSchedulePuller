@@ -78,8 +78,7 @@ http://127.0.0.1:8000/
 .
 ├── app.py                  # Main application file
 ├── requirements.txt        # Python dependencies
-├── README.md               # This file
-└── static/                 # Static files (CSS, JS, images)
+└── README.md               # This file
 ```
 
 ## Deployment
